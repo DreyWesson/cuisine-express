@@ -1,0 +1,34 @@
+<div
+  class="jumbotron jumbotron-fluid shadow-lg col-lg-10 mx-auto"
+  style="background-color: white; border-radius: 10px; min-width: 50vw;"
+>
+  <div class="container">
+    <div class="row">
+      <div
+        class="d-flex justify-content-center col-xs-12 col-md-6"
+        style="height: 100%;"
+      >
+        <img
+          src="https://source.unsplash.com/600x500/?cuisine"
+          alt=""
+          class="img-fluid rounded"
+        />
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h1>Our Courses</h1>
+        <% offeredCourses.forEach(course => { %>
+        <div class="row my-2">
+          <h2 class="col-9 h5">
+            <%= course.title %>
+          </h2>
+          <span
+            class="h4 col-2 badge badge-secondary py-1"
+            style="max-height: 23px; font-size: 14px;"
+            >$ <%= course.cost %>
+          </span>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</div>

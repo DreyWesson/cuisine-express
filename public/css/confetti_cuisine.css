@@ -1,0 +1,15 @@
+input#email {
+  width: 100%;
+}
+input#email-courses {
+  width: 50%;
+}
+p {
+  line-height: 30px;
+}
+body {
+  max-width: 100%;
+}
+img {
+  max-width: 100%;
+}

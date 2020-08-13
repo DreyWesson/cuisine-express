@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-center mb-5">
+  <div class="card col-xs-12 col-md-10 p-3">
+    <img class="card-img-top" src="./img/cuisine.jpg" alt="Card image cap" />
+    <div class="card-body">
+      <h5 class="card-title text-center">Reach Out To US</h5>
+      <p class="card-text text-center">
+        Enter your email if you're interested in learning more
+      </p>
+      <form class="contact-form col-12" action="/subscribe" method="post">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            placeholder="Enter name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Enter e-mail"
+            name="email"
+            id="email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="zipCode">Zip Code</label>
+          <input
+            class="form-control"
+            type="text"
+            name="zipCode"
+            placeholder="Zip Code"
+            pattern="[0-9]{5}"
+          />
+        </div>
+        <!-- <input
+            class="btn btn-warning button"
+            class="form-control"
+            type="submit"
+            value="submit"
+          /> -->
+        <button type="submit" class="btn btn-warning">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
