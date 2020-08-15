@@ -2,7 +2,7 @@
 
 # Install Dependencies
 
-npm install
+npm install,
 npm i nodemon
 
 # Run the application

@@ -7,14 +7,16 @@ function errorHandler(res, errorCode, errorDetails = "Page doesn't exist") {
   });
 }
 
-exports.respondNoResourceFound = (req, res) => {
+respondNoResourceFound = (req, res) => {
   let errorCode = httpStatus.NOT_FOUND;
   res.status(errorCode);
   errorHandler(res, errorCode);
 };
-exports.respondInternalError = (error, req, res, next) => {
+respondInternalError = (error, req, res, next) => {
   let errorCode = httpStatus.INTERNAL_SERVER_ERROR;
   let errorStack = error.stack;
   res.status(errorCode);
   errorHandler(res, errorCode, errorStack);
 };
+
+module.exports = { respondNoResourceFound, respondInternalError };

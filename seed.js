@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"),
-  Subscriber = require("./model/subscribers");
+  Subscriber = require("./models/subscribers");
 
 // mongoose.connect("mongodb://localhost:27017/recipe_db", {
 //   useNewUrlParser: true,
@@ -42,27 +42,27 @@ var contacts = [
   },
 ];
 // Set up the connection to the database.
-// Subscriber.deleteMany()
-//   .exec()
-//   .then(() => {
-//     // Remove all existing data.
-//     console.log("Subscriber data is empty!");
-//   });
+Subscriber.deleteMany()
+  .exec()
+  .then(() => {
+    // Remove all existing data.
+    console.log("Subscriber data is empty!");
+  });
 // Loop through
 var commands = [];
 // subscriber objects to create promises.
-contacts.forEach((c) => {
-  commands.push(
-    Subscriber.create({
-      name: c.name,
-      email: c.email,
-    })
-  );
-});
-Promise.all(commands)
-  .then((r) => {
-    // Log confirmation after promises resolve.
-    console.log(JSON.stringify(r));
-    mongoose.connection.close();
-  })
-  .catch((error) => console.log(`ERROR: ${error}`));
+// contacts.forEach((c) => {
+//   commands.push(
+//     Subscriber.create({
+//       name: c.name,
+//       email: c.email,
+//     })
+//   );
+// });
+// Promise.all(commands)
+//   .then((r) => {
+//     // Log confirmation after promises resolve.
+//     console.log(JSON.stringify(r));
+//     mongoose.connection.close();
+//   })
+//   .catch((error) => console.log(`ERROR: ${error}`));
