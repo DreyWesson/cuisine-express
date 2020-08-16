@@ -42,10 +42,12 @@ mongoose.Promise = global.Promise;
 var testUser;
 User.create({
   name: {
-    first: "Jon",
+    first: "Bens",
     last: "Dexl ",
   },
-  email: "jon@jondexl.com",
+  zipCode: "12345",
+  friend: "enemy",
+  email: "Bens@jondexl.com",
   password: "pass123",
 })
   .then((user) => {

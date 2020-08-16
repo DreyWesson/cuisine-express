@@ -33,4 +33,7 @@ const mongoose = require("mongoose"),
 userSchema.virtual("fullName").get(function () {
   return `${this.name.first} ${this.name.last}`;
 });
+userSchema.virtual("nickname").get(function () {
+  return `${this.name.first}${this.zipCode}`;
+});
 module.exports = mongoose.model("User", userSchema);

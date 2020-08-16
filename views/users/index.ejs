@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" style="min-width: 57vw;">
   <h2>Users Table</h2>
   <table class="table table-striped table-dark">
     <thead>
@@ -6,6 +6,7 @@
         <th scope="col">Name</th>
         <th scope="col">Email</th>
         <th scope="col">Zip Code</th>
+        <th class="text-center" scope="col">Name's length</th>
       </tr>
     </thead>
     <tbody>
@@ -14,6 +15,9 @@
         <td><%= user.fullName %></td>
         <td><%= user.email %></td>
         <td>@<%= user.zipCode %></td>
+        <td class="text-center">
+          <%= user.fullName.replace(/\s/g, "").length %>
+        </td>
       </tr>
       <% }); %>
     </tbody>

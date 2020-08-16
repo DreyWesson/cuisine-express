@@ -20,6 +20,7 @@ const express = require("express"),
   app = express(),
   homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController"),
+  usersController = require("./controllers/usersController"),
   partials = require("express-partials");
 
 app.set("port", process.env.PORT || 3000);
@@ -33,17 +34,14 @@ app.use(express.static("public"));
 app.get("view engine");
 app.get("/", homeController.showHome);
 app.get("/courses", homeController.showCourses);
-// app.get("/contact", homeController.showSignUp);
-// app.get("/contact", homeController.postedSignUpForm);
 app.get("/contact", subscribersController.getSubscriptionPage);
 app.get(
   "/subscribers",
-  subscribersController.getAllSubscribers,
-  (req, res, next) => {
-    console.log(req.data);
-    res.render("subscribers", { subscribers: req.data });
-  }
+  subscribersController.index,
+  subscribersController.indexView
 );
+app.get("/users", usersController.index, usersController.indexView);
+app.get("/users/create", usersController.new);
 
 app.post("/subscribe", subscribersController.saveSubscriber);
 
