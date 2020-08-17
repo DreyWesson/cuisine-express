@@ -1,0 +1,46 @@
+<div class="card col-xs-12 col-md-12 p-3" style="min-width: 25vw;">
+  <div class="card-body data-form">
+    <form
+      class="contact-form col-12"
+      action="/subscribers/create"
+      method="POST"
+    >
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="name"
+          id="inputFirstName"
+          placeholder="Enter name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Enter email"
+          name="email"
+          id="inputEmail"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="zipCode">Zip Code</label>
+        <input
+          class="form-control"
+          type="text"
+          name="zipCode"
+          placeholder="Zip Code"
+          id="inputZipCode"
+          pattern="\d*"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-warning w-100">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

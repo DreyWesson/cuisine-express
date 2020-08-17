@@ -18,6 +18,7 @@ db.once("open", () => {
 
 const express = require("express"),
   app = express(),
+  router = express.Router(),
   homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController"),
   usersController = require("./controllers/usersController"),
@@ -26,29 +27,39 @@ const express = require("express"),
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(partials());
-app.use(express.static("public"));
+app.use("/", router);
+router.use(express.urlencoded({ extended: false }));
+router.use(express.json());
+router.use(partials());
+router.use(express.static("public"));
 
-app.get("view engine");
-app.get("/", homeController.showHome);
-app.get("/courses", homeController.showCourses);
-app.get("/contact", subscribersController.getSubscriptionPage);
-app.get(
+router.get("view engine");
+router.get("/", homeController.showHome);
+
+router.get("/users", usersController.index, usersController.indexView);
+router.get("/users/new", usersController.new);
+router.get(
   "/subscribers",
   subscribersController.index,
   subscribersController.indexView
 );
-app.get("/users", usersController.index, usersController.indexView);
-app.get("/users/create", usersController.new);
+router.get("/subscribers/new", subscribersController.new);
 
-app.post("/subscribe", subscribersController.saveSubscriber);
+router.post(
+  "/subscribers/create",
+  subscribersController.create,
+  subscribersController.redirectView
+);
+router.post(
+  "/users/create",
+  usersController.create,
+  usersController.redirectView
+);
 
 // Errorhandlers
 // Must go beneath pre-existing routes else it will override them
-app.use(errorController.respondNoResourceFound);
-app.use(errorController.respondInternalError);
+router.use(errorController.respondNoResourceFound);
+router.use(errorController.respondInternalError);
 
 let port = app.get("port");
 app.listen(port, () => {

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose"),
   Subscriber = require("./models/subscribers"),
+  User = require("./models/user"),
   Course = require("./models/course");
 mongoose.connect("mongodb://localhost:27017/recipe_db", {
   useNewUrlParser: true,
@@ -37,18 +38,23 @@ function searchModel(model, param) {
   // pass in the model(Subscriber, Course etc) and search param
   switch (model) {
     case Subscriber:
-      Subscriber.findOne({ name: param }).then((subscriber) =>
-        console.log(`Found one subscriber: ${subscriber.getInfo()}`)
-      );
+      Subscriber.findOne({ name: param }).then((subscriber) => {
+        console.log(subscriber);
+        console.log(`Found one subscriber: ${subscriber.getInfo()}`);
+      });
       break;
     case Course:
       Course.findOne({ title: param }).then((course) => console.log(course));
+      break;
+    case User:
+      User.findOne({ email: param }).then((user) => console.log(user));
       break;
     default:
       break;
   }
 }
-// searchModel(Subscriber, "rael");
+searchModel(Subscriber, "xxx");
+searchModel(User, "xxx@gmail.com");
 // searchModel(Course, "Things fall apart");
 
 // ASSOCIATE course with subscriber
@@ -76,13 +82,24 @@ function populate(name, title) {
 }
 // populate("Jon", "Tomato Land");
 // Query subscribers where ObjectId is same as course.
-Course.findOne({ title: "Tomato Land" })
-  .then((course) => {
-    console.log(course._id);
-    console.log(mongoose.Types.ObjectId(course._id));
+// Course.findOne({ title: "Tomato Land" })
+//   .then((course) => {
+//     console.log(course._id);
+//     console.log(mongoose.Types.ObjectId(course._id));
 
-    return Subscriber.findById({
-      courses: mongoose.Types.ObjectId(course._id),
-    });
-  })
-  .then((subscriber) => console.log(subscriber));
+//     return Subscriber.findById({
+//       courses: mongoose.Types.ObjectId(course._id),
+//     });
+//   })
+//   .then((subscriber) => console.log(subscriber));
+
+// Course.findOne({ title: "Tomato Land" })
+//   .then((course) => {
+//     console.log(course._id);
+//     console.log(mongoose.Types.ObjectId(course._id));
+
+//     return Subscriber.findById({
+//       courses: mongoose.Types.ObjectId(course._id),
+//     });
+//   })
+//   .then((subscriber) => console.log(subscriber));

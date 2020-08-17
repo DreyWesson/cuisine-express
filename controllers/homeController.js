@@ -4,18 +4,8 @@ var courses = [
   { title: "Object Oriented Orange Juice", cost: 10 },
 ];
 
-showHome = (req, res) => {
-  res.render("../views/index");
+module.exports = {
+  showHome: (req, res) => {
+    res.render("../views/index");
+  },
 };
-showCourses = (req, res) => {
-  res.render("../views/courses", {
-    offeredCourses: courses,
-  });
-};
-showSignUp = (req, res) => {
-  res.render("../views/contact");
-};
-postedSignUpForm = (req, res) => {
-  res.render("../views/thanks");
-};
-module.exports = { showHome, showCourses, showSignUp, postedSignUpForm };

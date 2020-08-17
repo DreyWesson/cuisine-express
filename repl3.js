@@ -26,7 +26,7 @@ Subscriber.deleteMany({})
     console.log(`Created Subscriber: ${subscriber.getInfo()}`);
   })
   .then(() => {
-    return Subscriber.findOne({ name: "Drey" });
+    return Subscriber.findOne({ name: "xxx" });
   })
   .then((subscriber) => {
     testSubscriber = subscriber;
