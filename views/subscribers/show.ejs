@@ -1,0 +1,42 @@
+<div class="container" style="min-width: 40vw;">
+  <div class="d-flex mb-3">
+    <div style="margin-right: 20px;">
+      <img
+        src="https://source.unsplash.com/125x125/?avatar"
+        alt="avatar"
+        class="img-fluid rounded-circle"
+      />
+    </div>
+    <div class="d-flex align-items-center">
+      <div>
+        <h1>
+          <%= subscriber.name %>
+        </h1>
+        <span class="pl-2">Subscriber data for <%= subscriber.name %></span>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped table-dark">
+    <tr>
+      <th class="pl-4" scope="col">Name</th>
+      <td><%= subscriber.name %></td>
+    </tr>
+
+    <tr>
+      <th class="pl-4">Email</th>
+      <td><%= subscriber.email %></td>
+    </tr>
+    <tr>
+      <th class="pl-4">Zip Code</th>
+      <td><%= subscriber.zipCode %></td>
+    </tr>
+  </table>
+  <% if (subscriber.subscribedAccount) { %>
+  <h2 class="h5">
+    This user has a
+    <a href="<%=`/subscribers/${subscriber.subscribedAccount}` %>">
+      subscribed account</a
+    >.
+  </h2>
+  <% } %>
+</div>

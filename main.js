@@ -44,6 +44,12 @@ router.get(
   subscribersController.indexView
 );
 router.get("/subscribers/new", subscribersController.new);
+router.get("/users/:id", usersController.show, usersController.showView);
+router.get(
+  "/subscribers/:id",
+  subscribersController.show,
+  subscribersController.showView
+);
 
 router.post(
   "/subscribers/create",
@@ -56,7 +62,7 @@ router.post(
   usersController.redirectView
 );
 
-// Errorhandlers
+// ErrorHandlers
 // Must go beneath pre-existing routes else it will override them
 router.use(errorController.respondNoResourceFound);
 router.use(errorController.respondInternalError);

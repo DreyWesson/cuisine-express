@@ -40,4 +40,17 @@ module.exports = {
     if (redirectPath) res.redirect(redirectPath);
     else next();
   },
+  show: (req, res, next) => {
+    let subscriberId = req.params.id;
+    Subscriber.findById(subscriberId)
+      .then((subscriber) => {
+        res.locals.subscriber = subscriber;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error fetching user by ID: ${error.message}`);
+        next(error);
+      });
+  },
+  showView: (req, res) => res.render("subscribers/show"),
 };
