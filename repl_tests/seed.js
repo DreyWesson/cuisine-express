@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"),
-  Subscriber = require("./models/subscribers");
+  Subscriber = require("../models/subscribers");
 
 // mongoose.connect("mongodb://localhost:27017/recipe_db", {
 //   useNewUrlParser: true,
