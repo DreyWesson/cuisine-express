@@ -35,10 +35,11 @@
               Edit
             </a>
           </td>
-          <td onclick="deleteUser()">
+          <td>
             <a
               href="<%= `users/${user._id}/delete?_method=DELETE` %>"
               style="color: #f8f9fa; text-decoration: underline;"
+              onclick="return confirm('Are you sure you want to delete this record?')"
             >
               Delete
             </a>

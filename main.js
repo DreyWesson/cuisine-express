@@ -5,6 +5,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 const client = mongoose.connect;
 
@@ -82,10 +83,23 @@ router.get(
   subscribersController.show,
   subscribersController.showView
 );
+//  Edit user details
+router.get("/subscribers/:id/edit", subscribersController.edit);
 // Submit: create new subscriber form
 router.post(
   "/subscribers/create",
   subscribersController.create,
+  subscribersController.redirectView
+);
+// Submit: update user edited profile
+router.put(
+  "/subscribers/:id/update",
+  subscribersController.update,
+  subscribersController.redirectView
+);
+router.delete(
+  "/subscribers/:id/delete",
+  subscribersController.delete,
   subscribersController.redirectView
 );
 

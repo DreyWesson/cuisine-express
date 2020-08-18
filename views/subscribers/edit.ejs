@@ -1,0 +1,51 @@
+<div class="card col-xs-12 col-md-12 p-3" style="min-width: 25vw;">
+  <div class="card-body data-form">
+    <form
+      class="contact-form col-12"
+      method="POST"
+      action="<%=`/subscribers/${subscriber._id}/update?_method=PUT`%>"
+    >
+      <h2>Edit subscriber:</h2>
+      <div class="form-group">
+        <label for="inputFirstName">Name</label>
+        <input
+          class="form-control"
+          type="text"
+          name="name"
+          id="inputFirstName"
+          value="<%=subscriber.name %>"
+          placeholder="name"
+          autofocus
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputEmail">Email address</label>
+        <input
+          class="form-control"
+          type="email"
+          name="email"
+          id="inputEmail"
+          value="<%=subscriber.email %>"
+          placeholder="Email address"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputZipCode">Zip Code</label>
+        <input
+          class="form-control"
+          type="text"
+          name="zipCode"
+          id="inputZipCode"
+          pattern="\d*"
+          value="<%= subscriber.zipCode %>"
+          placeholder="Zip Code"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-warning w-100">
+        Update
+      </button>
+    </form>
+  </div>
+</div>

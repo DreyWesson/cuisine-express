@@ -39,7 +39,6 @@ userSchema.pre("save", function (next) {
         user.subscribedAccount = subscriber;
         next();
       })
-
       .catch((error) => {
         console.log(`Error in connecting subscriber: ${error.message}`);
         next(error);

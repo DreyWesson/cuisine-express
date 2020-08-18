@@ -1,5 +1,7 @@
 const mongoose = require("mongoose"),
-  subscriberSchema = new mongoose.Schema(
+  User = require("./user"),
+  { Schema } = mongoose,
+  subscriberSchema = new Schema(
     {
       name: {
         type: String,
@@ -23,7 +25,22 @@ const mongoose = require("mongoose"),
       timestamps: true,
     }
   );
-
+subscriberSchema.pre("save", function (next) {
+  let subscriber = this;
+  if (subscriber.subscribedAccount === undefined) {
+    User.findOne({ email: subscriber.email })
+      .then((user) => {
+        subscriber.subscribedAccount = user;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error in connecting subscriber: ${error.message}`);
+        next(error);
+      });
+  } else {
+    next();
+  }
+});
 subscriberSchema.methods.getInfo = function () {
   return `Name: ${this.name} Email: ${this.email} Zip Code: ${this.zipCode}`;
 };
