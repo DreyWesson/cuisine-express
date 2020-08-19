@@ -29,9 +29,10 @@ module.exports = {
       zipCode: req.body.zipCode,
     };
     User.create(userParams)
-      .then((user) => {
+      .then((users) => {
+        console.log(users);
         res.locals.redirect = "/users";
-        res.locals.user = user;
+        res.locals.users = users;
         next();
       })
       .catch((error) => {

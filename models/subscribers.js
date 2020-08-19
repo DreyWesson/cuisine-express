@@ -1,5 +1,4 @@
 const mongoose = require("mongoose"),
-  User = require("./user"),
   { Schema } = mongoose,
   subscriberSchema = new Schema(
     {
@@ -49,3 +48,5 @@ subscriberSchema.methods.findLocalSubscribers = function () {
 };
 
 module.exports = mongoose.model("Subscriber", subscriberSchema);
+// Required here due to circular dependencies issues between User&Subscriber model
+const User = require("./user");

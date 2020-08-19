@@ -1,0 +1,59 @@
+<div class="container" style="min-width: 40vw;">
+  <div class="d-flex mb-3">
+    <div style="margin-right: 20px;">
+      <img
+        src="https://source.unsplash.com/125x125/?avatar"
+        alt="avatar"
+        class="img-fluid rounded-circle"
+      />
+    </div>
+    <div class="d-flex align-items-center">
+      <div>
+        <h1>
+          <%= course.name %>
+        </h1>
+        <span>Subscriber data for <%= course.name %></span>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped table-dark">
+    <tr>
+      <th class="pl-4" scope="col">Name</th>
+      <td><%= course.name %></td>
+    </tr>
+
+    <tr>
+      <th class="pl-4">Email</th>
+      <td><%= course.email %></td>
+    </tr>
+    <tr>
+      <th class="pl-4">Zip Code</th>
+      <td><%= course.zipCode %></td>
+    </tr>
+  </table>
+  <div class="d-flex justify-content-between">
+    <% if (course.subscribedAccount) { %>
+    <h2 class="h5">
+      This user has a
+      <a href="<%=`/users/${course.subscribedAccount}` %>">
+        subscribed account</a
+      >.
+    </h2>
+    <% } %>
+    <button class="btn btn-primary">
+      <a href="/users" style="color: white;">View all users</a>
+    </button>
+  </div>
+  <div class="d-flex justify-content-between mt-3">
+    <div>
+      <a href="<%=`/subscribers/${course._id}/edit`%>">Edit details </a>
+    </div>
+    <div>
+      <a
+        href="<%= `/subscribers/${course._id}/delete?_method=DELETE` %>"
+        onclick="return confirm('Are you sure you want to delete this record?')"
+        >Delete</a
+      >
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="card col-xs-12 col-md-12 p-3" style="min-width: 25vw;">
+  <div class="card-body data-form">
+    <form
+      class="contact-form col-12"
+      method="POST"
+      action="<%=`/courses/${course._id}/update?_method=PUT`%>"
+    >
+      <h2>Edit course:</h2>
+      <div class="form-group">
+        <label for="inputTitle">Title</label>
+        <input
+          class="form-control"
+          type="text"
+          name="title"
+          id="inputTitle"
+          value="<%=course.title %>"
+          placeholder="Enter title"
+          autofocus
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputDescrptn">Description</label>
+        <input
+          class="form-control"
+          type="text"
+          name="description"
+          id="inputDescrptn"
+          value="<%=course.description %>"
+          placeholder="Enter course description"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputMaxStudents">Max. Students</label>
+        <input
+          class="form-control"
+          type="number"
+          name="maxStudents"
+          id="inputMaxStudents"
+          value="<%= course.maxStudents %>"
+          placeholder="Enter max number of students"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="inputCost">Cost</label>
+        <input
+          class="form-control"
+          type="number"
+          name="cost"
+          id="inputCost"
+          value="<%= course.cost %>"
+          placeholder="Enter max number of students"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-warning w-100">
+        Update
+      </button>
+    </form>
+  </div>
+</div>
