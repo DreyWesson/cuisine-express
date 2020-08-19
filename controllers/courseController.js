@@ -1,4 +1,12 @@
-const Course = require("../models/course");
+const Course = require("../models/course"),
+  getCourseParams = (body) => {
+    return {
+      title: body.title,
+      description: body.description,
+      maxStudents: body.maxStudents,
+      cost: body.cost,
+    };
+  };
 
 module.exports = {
   index: (req, res, next) => {
@@ -19,12 +27,7 @@ module.exports = {
     res.render("courses/new");
   },
   create: (req, res, next) => {
-    let courseParams = {
-      title: req.body.title,
-      description: req.body.description,
-      maxStudents: req.body.maxStudents,
-      cost: req.body.cost,
-    };
+    let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then((course) => {
         res.locals.redirect = "/courses";
@@ -68,12 +71,7 @@ module.exports = {
   },
   update: (req, res, next) => {
     let courseId = req.params.id,
-      courseParams = {
-        title: req.body.title,
-        description: req.body.description,
-        maxStudents: req.body.maxStudents,
-        cost: req.body.cost,
-      };
+      courseParams = getCourseParams(req.body);
     Course.findByIdAndUpdate(courseId, { $set: courseParams })
       .then((course) => {
         res.locals.redirect = `/courses/${courseId}`;

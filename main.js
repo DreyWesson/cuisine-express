@@ -1,22 +1,6 @@
 const mongoose = require("mongoose"),
-  url = "mongodb://localhost/recipe_db";
-mongoose.Promise = global.Promise;
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
-const client = mongoose.connect;
-
-var db = mongoose.createConnection(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-db.once("open", () => {
-  console.log("Successfully connected to MongoDB using Mongoose!");
-});
-
-const express = require("express"),
+  url = "mongodb://localhost/recipe_db",
+  express = require("express"),
   app = express(),
   router = express.Router(),
   homeController = require("./controllers/homeController"),
@@ -25,7 +9,26 @@ const express = require("express"),
   subscribersController = require("./controllers/subscribersController"),
   courseController = require("./controllers/courseController"),
   partials = require("express-partials"),
-  methodOverride = require("method-override");
+  methodOverride = require("method-override"),
+  connectFlash = require("connect-flash"),
+  cookieParser = require("cookie-parser"),
+  expressSession = require("express-session");
+require("dotenv").config();
+
+mongoose.Promise = global.Promise;
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
+const client = mongoose.connect;
+var db = mongoose.createConnection(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+db.once("open", () => {
+  console.log("Successfully connected to MongoDB using Mongoose!");
+});
 
 app.set("port", process.env.PORT || 3000);
 app.set("view engine", "ejs");
@@ -39,7 +42,20 @@ router.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 router.get("view engine");
 router.get("/", homeController.showHome);
-
+router.use(cookieParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: { maxAge: 4000000 },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+router.use(connectFlash());
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+});
 // Users
 // Get all users
 router.get("/users", usersController.index, usersController.indexView);

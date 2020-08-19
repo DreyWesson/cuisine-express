@@ -29,6 +29,10 @@
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
     <style>
       .container,
       .container-fluid,
@@ -94,6 +98,24 @@
           </ul>
         </div>
       </nav>
+    </div>
+
+    <div class="flashes">
+      <% if (flashMessages) { %> <% if (flashMessages.success) { %>
+      <div
+        class="container flash success h4 text-right text-success animate__animated animate__fadeInDown animate__delay-1s"
+      >
+        <i class="far fa-thumbs-up mr-3 h2"></i>
+        <%= flashMessages.success %>
+      </div>
+      <% } else if (flashMessages.error) { %>
+      <div
+        class="flash error h4 text-right text-danger animate__animated animate__fadeInDown animate__delay-1s"
+      >
+        <i class="far fa-thumbs-down mr-3 h2"></i>
+        <%= flashMessages.error %>
+      </div>
+      <% } %> <% } %>
     </div>
     <div class="container d-flex _slot" style="min-height: 70vh;">
       <!-- EJS: LAYOUT & PARTIALS slot -->

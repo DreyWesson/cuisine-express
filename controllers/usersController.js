@@ -1,4 +1,15 @@
-const User = require("../models/user");
+const User = require("../models/user"),
+  getUserParams = (body) => {
+    return {
+      name: {
+        first: body.first,
+        last: body.last,
+      },
+      email: body.email,
+      password: body.password,
+      zipCode: parseInt(body.zipCode),
+    };
+  };
 
 module.exports = {
   index: (req, res, next) => {
@@ -19,24 +30,23 @@ module.exports = {
     res.render("users/new");
   },
   create: (req, res, next) => {
-    let userParams = {
-      name: {
-        first: req.body.first,
-        last: req.body.last,
-      },
-      email: req.body.email,
-      password: req.body.password,
-      zipCode: req.body.zipCode,
-    };
+    let userParams = getUserParams(req.body);
     User.create(userParams)
       .then((users) => {
-        console.log(users);
+        req.flash(
+          "success",
+          `${users.fullName}'s account created successfully!`
+        );
         res.locals.redirect = "/users";
         res.locals.users = users;
         next();
       })
       .catch((error) => {
         console.log(`Error saving user: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to create user account because: ${error.message}.`
+        );
         next(error);
       });
   },
@@ -54,6 +64,7 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching user by ID: ${error.message}`);
+        req.flash("error", `Error fetching user by ID: ${error.message}.`);
         next(error);
       });
   },
@@ -81,40 +92,43 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching user by ID: ${error.message}`);
+        req.flash("error", `Error editing user by ID: ${error.message}.`);
         next(error);
       });
   },
   update: (req, res, next) => {
     let userId = req.params.id,
-      userParams = {
-        name: {
-          first: req.body.first,
-          last: req.body.last,
-        },
-        email: req.body.email,
-        password: req.body.password,
-        zipCode: req.body.zipCode,
-      };
+      userParams = getUserParams(req.body);
     User.findByIdAndUpdate(userId, { $set: userParams })
       .then((user) => {
         res.locals.redirect = `/users/${userId}`;
         res.locals.user = user;
+        req.flash(
+          "success",
+          `${user.fullName}'s account updated successfully!`
+        );
         next();
       })
       .catch((error) => {
         console.log(`Error updating user by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to create user account because: ${error.message}.`
+        );
         next(error);
       });
   },
   delete: (req, res, next) => {
     let userId = req.params.id;
     User.findByIdAndRemove(userId)
-      .then(() => {
+      .then((users) => {
         res.locals.redirect = "/users";
+        req.flash("success", `${users.fullName}'s account deleted!`);
         next();
       })
       .catch((error) => {
         console.log(`Error deleting user by ID: ${error.message}`);
+        req.flash("error", `Error deleting user by ID: ${error.message}.`);
         next();
       });
   },
