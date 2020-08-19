@@ -26,6 +26,9 @@ const mongoose = require("mongoose"),
   );
 subscriberSchema.pre("save", function (next) {
   let subscriber = this;
+  // Method 1: Resolve circular-dependency issues by
+  // using the mongoose.model to require ur model
+  const User = mongoose.model("User");
   if (subscriber.subscribedAccount === undefined) {
     User.findOne({ email: subscriber.email })
       .then((user) => {
@@ -48,5 +51,6 @@ subscriberSchema.methods.findLocalSubscribers = function () {
 };
 
 module.exports = mongoose.model("Subscriber", subscriberSchema);
-// Required here due to circular dependencies issues between User&Subscriber model
-const User = require("./user");
+// Method 2: Require here at the bottom due to circular dependencies issues
+// between User&Subscriber model
+// const User = require("./user");

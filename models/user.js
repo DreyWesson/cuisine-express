@@ -30,25 +30,12 @@ const mongoose = require("mongoose"),
       timestamps: true,
     }
   );
-// userSchema.pre("save", function (next) {
-//   let user = this;
-//   if (user.subscribedAccount === undefined) {
-//     Subscriber.findOne({ email: user.email })
-//       .then((subscriber) => {
-//         user.subscribedAccount = subscriber;
-//         next();
-//       })
-//       .catch((error) => {
-//         console.log(`Error in connecting subscriber: ${error.message}`);
-//         next(error);
-//       });
-//   } else {
-//     next();
-//   }
-// });
 
 userSchema.pre("save", function (next) {
   let user = this;
+  // Method 1: Resolve circular-dependency issues by
+  // using the mongoose.model to require ur model
+  const Subscriber = mongoose.model("Subscriber");
   if (user.subscribedAccount === undefined) {
     Subscriber.findOne({ email: user.email })
       .then((subscriber) => {
@@ -71,5 +58,6 @@ userSchema.virtual("nickname").get(function () {
   return `${this.name.first}${this.zipCode}`;
 });
 module.exports = mongoose.model("User", userSchema);
-// Required here due to circular dependencies issues between User&Subscriber model
-const Subscriber = require("./subscribers");
+// Method 2: Require here at the bottom due to circular dependencies issues
+// between User&Subscriber model
+// const Subscriber = require("./subscribers");
