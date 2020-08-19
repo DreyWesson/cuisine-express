@@ -1,6 +1,5 @@
 const mongoose = require("mongoose"),
-  url = "mongodb://localhost/recipe_db",
-  subscribersController = require("./controllers/subscribersController");
+  url = "mongodb://localhost/recipe_db";
 mongoose.Promise = global.Promise;
 mongoose.connect(url, {
   useNewUrlParser: true,
@@ -23,6 +22,8 @@ const express = require("express"),
   homeController = require("./controllers/homeController"),
   errorController = require("./controllers/errorController"),
   usersController = require("./controllers/usersController"),
+  subscribersController = require("./controllers/subscribersController"),
+  courseController = require("./controllers/courseController"),
   partials = require("express-partials"),
   methodOverride = require("method-override");
 
@@ -101,6 +102,33 @@ router.delete(
   "/subscribers/:id/delete",
   subscribersController.delete,
   subscribersController.redirectView
+);
+
+// Course
+// Get all Course
+router.get("/courses", courseController.index, courseController.indexView);
+// Get new Course's form
+router.get("/courses/new", courseController.new);
+// Get Course with id
+router.get("/courses/:id", courseController.show, courseController.showView);
+//  Edit user details
+router.get("/courses/:id/edit", courseController.edit);
+// Submit: create new Course form
+router.post(
+  "/courses/create",
+  courseController.create,
+  courseController.redirectView
+);
+// Submit: update Course edited profile
+router.put(
+  "/courses/:id/update",
+  courseController.update,
+  courseController.redirectView
+);
+router.delete(
+  "/courses/:id/delete",
+  courseController.delete,
+  courseController.redirectView
 );
 
 // ErrorHandlers

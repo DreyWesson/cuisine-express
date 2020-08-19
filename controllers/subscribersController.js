@@ -65,7 +65,6 @@ module.exports = {
       });
   },
   update: (req, res, next) => {
-    console.log(req.body.name);
     let subscriberId = req.params.id,
       subscriberParams = {
         name: req.body.name,

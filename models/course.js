@@ -1,5 +1,6 @@
 const mongoose = require("mongoose"),
-  courseSchema = new mongoose.Schema(
+  { Schema } = require("mongoose"),
+  courseSchema = new Schema(
     {
       title: {
         type: String,
@@ -10,19 +11,38 @@ const mongoose = require("mongoose"),
         type: String,
         required: true,
       },
-      items: [],
-      zipCode: {
-        // Add properties to the course schema.
+      maxStudents: {
         type: Number,
-        min: [10000, "Zip code too short"],
-        max: 99999,
+        default: 0,
+        min: [0, "Course cannot have a negative number of students"],
       },
-      subscribers: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Subscriber" },
-      ],
+      cost: {
+        type: Number,
+        default: 0,
+        min: [0, "Course cannot have a negative cost"],
+      },
     },
     {
       timestamps: true,
     }
   );
+courseSchema.pre("save", function (next) {
+  let course = this;
+  // Method 1: Resolve circular-dependency issues by
+  // using the mongoose.model to require ur model
+  const Subscriber = mongoose.model("Subscriber");
+  if (course.subscribedAccount === undefined) {
+    Subscriber.findOne({ email: course.email })
+      .then((subscriber) => {
+        course.subscribedAccount = subscriber;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error in connecting subscriber: ${error.message}`);
+        next(error);
+      });
+  } else {
+    next();
+  }
+});
 module.exports = mongoose.model("Course", courseSchema);

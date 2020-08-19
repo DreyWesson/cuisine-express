@@ -32,16 +32,19 @@
     </tr>
   </table>
   <div class="d-flex justify-content-between">
+    <p>
+      This subscriber has <%= subscriber.courses.length %> associated course(s)
+    </p>
     <% if (subscriber.subscribedAccount) { %>
     <h2 class="h5">
       This user has a
-      <a href="<%=`/users/${subscriber.subscribedAccount}` %>">
+      <a href="<%=`/subscribers/${subscriber.subscribedAccount}` %>">
         subscribed account</a
       >.
     </h2>
     <% } %>
     <button class="btn btn-primary">
-      <a href="/users" style="color: white;">View all users</a>
+      <a href="/subscribers" style="color: white;">View all subscribers</a>
     </button>
   </div>
   <div class="d-flex justify-content-between mt-3">
