@@ -15,7 +15,7 @@ module.exports = {
         next();
       })
       .catch((error) => {
-        console.log(`Error fetching users: ${error.message}`);
+        console.log(`Error fetching subscribers: ${error.message}`);
         next(error);
       });
   },
@@ -31,10 +31,18 @@ module.exports = {
       .then((subscribers) => {
         res.locals.redirect = "/subscribers";
         res.locals.subscribers = subscribers;
+        req.flash(
+          "success",
+          `${subscribers.name}'s subscriber created successfully!`
+        );
         next();
       })
       .catch((error) => {
         console.log(`Error saving subscriber: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to create subscriber because: ${error.message}.`
+        );
         next(error);
       });
   },
@@ -52,6 +60,10 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching user by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Error fetching subscriber by ID: ${error.message}.`
+        );
         next(error);
       });
   },
@@ -64,6 +76,10 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching user by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Error editing subscriber with ID: ${error.message}.`
+        );
         next(error);
       });
   },
@@ -74,22 +90,35 @@ module.exports = {
       .then((subscriber) => {
         res.locals.redirect = `/subscribers/${subscriberId}`;
         res.locals.subscriber = subscriber;
+        req.flash(
+          "success",
+          `${subscriber.name}'s subscription updated successfully!`
+        );
         next();
       })
       .catch((error) => {
         console.log(`Error updating user by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to update subscription because: ${error.message}.`
+        );
         next(error);
       });
   },
   delete: (req, res, next) => {
     let subscriberId = req.params.id;
     Subscriber.findByIdAndRemove(subscriberId)
-      .then(() => {
+      .then((subscriber) => {
         res.locals.redirect = "/subscribers";
+        req.flash("success", `${subscriber.name}'s subscription deleted!`);
         next();
       })
       .catch((error) => {
         console.log(`Error deleting user by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Error deleting subscriber with ID: ${error.message}.`
+        );
         next();
       });
   },

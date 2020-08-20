@@ -103,16 +103,19 @@
     <div class="flashes">
       <% if (flashMessages) { %> <% if (flashMessages.success) { %>
       <div
-        class="container flash success h4 text-right text-success animate__animated animate__fadeInDown animate__delay-1s"
+        id="success"
+        class="container flash success h4 text-right text-secondary animate__animated animate__fadeInDown"
+        style="width: 75ch;"
       >
         <i class="far fa-thumbs-up mr-3 h2"></i>
         <%= flashMessages.success %>
       </div>
       <% } else if (flashMessages.error) { %>
       <div
-        class="flash error h4 text-right text-danger animate__animated animate__fadeInDown animate__delay-1s"
+        id="error"
+        class="container flash error h4 text-right text-secondary animate__animated animate__fadeInDown"
       >
-        <i class="far fa-thumbs-down mr-3 h2"></i>
+        <i class="fas fa-times mr-3 h2"></i>
         <%= flashMessages.error %>
       </div>
       <% } %> <% } %>
@@ -173,5 +176,13 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"
     ></script>
+    <script>
+      setTimeout(function () {
+        $("#success").fadeOut("fast");
+      }, 3000);
+      setTimeout(function () {
+        $("#error").fadeOut("fast");
+      }, 3000);
+    </script>
   </body>
 </html>

@@ -42,10 +42,10 @@ router.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 router.get("view engine");
 router.get("/", homeController.showHome);
-router.use(cookieParser("secret_passcode"));
+router.use(cookieParser(process.env.secret));
 router.use(
   expressSession({
-    secret: "secret_passcode",
+    secret: process.env.secret,
     cookie: { maxAge: 4000000 },
     resave: false,
     saveUninitialized: false,

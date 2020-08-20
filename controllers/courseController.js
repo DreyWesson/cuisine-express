@@ -30,12 +30,17 @@ module.exports = {
     let courseParams = getCourseParams(req.body);
     Course.create(courseParams)
       .then((course) => {
+        req.flash("success", `${course.title}'s course created successfully!`);
         res.locals.redirect = "/courses";
         res.locals.course = course;
         next();
       })
       .catch((error) => {
         console.log(`Error saving course: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to create course because: ${error.message}.`
+        );
         next(error);
       });
   },
@@ -53,6 +58,7 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching course by ID: ${error.message}`);
+        req.flash("error", `Error fetching course by ID: ${error.message}.`);
         next(error);
       });
   },
@@ -66,6 +72,7 @@ module.exports = {
       })
       .catch((error) => {
         console.log(`Error fetching user by ID: ${error.message}`);
+        req.flash("error", `Error editing course by ID: ${error.message}.`);
         next(error);
       });
   },
@@ -76,22 +83,31 @@ module.exports = {
       .then((course) => {
         res.locals.redirect = `/courses/${courseId}`;
         res.locals.course = course;
+        req.flash("success", `${course.title}'s course updated successfully!`);
         next();
       })
       .catch((error) => {
         console.log(`Error updating course by ID: ${error.message}`);
+        req.flash(
+          "error",
+          `Failed to update course because: ${error.message}.`
+        );
         next(error);
       });
   },
   delete: (req, res, next) => {
     let courseId = req.params.id;
     Course.findByIdAndRemove(courseId)
-      .then(() => {
+      .then((course) => {
         res.locals.redirect = "/courses";
+        req.flash("success", `${course.title}'s course deleted!`);
+
         next();
       })
       .catch((error) => {
         console.log(`Error deleting course by ID: ${error.message}`);
+        req.flash("error", `Error deleting course by ID: ${error.message}.`);
+
         next();
       });
   },
