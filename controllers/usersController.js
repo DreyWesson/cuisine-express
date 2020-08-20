@@ -29,26 +29,63 @@ module.exports = {
   new: (req, res) => {
     res.render("users/new");
   },
+  validate: (req, res, next) => {
+    // Remove whitespace with the trim method.
+    req
+      .sanitizeBody("email")
+      .normalizeEmail({
+        all_lowercase: true,
+      })
+      .trim();
+    req.check("email", "Email is invalid").isEmail();
+    // Validate zip code field
+    req
+      .check("zipCode", "Zip code is invalid")
+      .notEmpty()
+      .isInt()
+      .isLength({
+        min: 5,
+        max: 5,
+      })
+      .equals(req.body.zipCode);
+    // Validate password field
+    req.check("password", "Password cannot be empty").notEmpty();
+    // Collect the results of previous validations
+    req.getValidationResult().then((error) => {
+      if (!error.isEmpty()) {
+        let messages = error.array().map((e) => e.msg);
+        req.skip = true;
+        req.flash("error", messages.join(" and "));
+        res.locals.redirect = "/users/new";
+        next();
+      } else {
+        next();
+      }
+    });
+  },
   create: (req, res, next) => {
     let userParams = getUserParams(req.body);
-    User.create(userParams)
-      .then((users) => {
-        req.flash(
-          "success",
-          `${users.fullName}'s account created successfully!`
-        );
-        res.locals.redirect = "/users";
-        res.locals.users = users;
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error saving user: ${error.message}`);
-        req.flash(
-          "error",
-          `Failed to create user account because: ${error.message}.`
-        );
-        next(error);
-      });
+    if (req.skip) next();
+    else {
+      User.create(userParams)
+        .then((users) => {
+          req.flash(
+            "success",
+            `${users.fullName}'s account created successfully!`
+          );
+          res.locals.redirect = "/users";
+          res.locals.users = users;
+          next();
+        })
+        .catch((error) => {
+          console.log(`Error saving user: ${error.message}`);
+          req.flash(
+            "error",
+            `Failed to create user account because: ${error.message}.`
+          );
+          next(error);
+        });
+    }
   },
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
@@ -130,6 +167,63 @@ module.exports = {
         console.log(`Error deleting user by ID: ${error.message}`);
         req.flash("error", `Error deleting user by ID: ${error.message}.`);
         next();
+      });
+  },
+  login: (req, res) => {
+    res.render("users/login");
+  },
+  authenticate: (req, res, next) => {
+    User.findOne({ email: req.body.email })
+      .then((user) => {
+        if (user && user.password === req.body.password) {
+          res.locals.redirect = `/users/${user._id}`;
+          req.flash("success", `${user.fullName}'s logged in successfully!`);
+          res.locals.user = user;
+          next();
+        } else {
+          req.flash("error", "Your account or password is incorrect.");
+          res.locals.redirect = "/users/login";
+          next();
+        }
+      })
+      .catch((error) => {
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
+      });
+  },
+  authenticate: (req, res, next) => {
+    User.findOne({ email: req.body.email })
+      .then((user) => {
+        if (user) {
+          user.passwordComparison(req.body.password).then((passwordsMatch) => {
+            if (passwordsMatch) {
+              res.locals.redirect = `/users/${user._id}`;
+              req.flash(
+                "success",
+                `${user.fullName}'s logged in successfully!`
+              );
+              res.locals.user = user;
+            } else {
+              req.flash(
+                "error",
+                "Failed to log in user account: Incorrect Password."
+              );
+              res.locals.redirect = "/users/login";
+            }
+            next();
+          });
+        } else {
+          req.flash(
+            "error",
+            "Failed to log in user account: User account not found."
+          );
+          res.locals.redirect = "/users/login";
+          next();
+        }
+      })
+      .catch((error) => {
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
       });
   },
 };

@@ -1,40 +1,25 @@
 <div class="card col-xs-12 col-md-12 p-3" style="min-width: 25vw;">
   <div class="card-body data-form">
-    <form
-      class="contact-form col-12"
-      action="/subscribers/create"
-      method="POST"
-    >
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input
-          type="text"
-          class="form-control"
-          name="name"
-          id="inputFirstName"
-          placeholder="Enter name"
-        />
-      </div>
+    <form class="contact-form col-12" action="/users/login" method="POST">
       <div class="form-group">
         <label for="email">Email</label>
         <input
           type="email"
           class="form-control"
-          placeholder="Enter email"
+          placeholder="Enter your email"
           name="email"
           id="inputEmail"
           required
         />
       </div>
       <div class="form-group">
-        <label for="zipCode">Zip Code</label>
+        <label for="zipCode">Password</label>
         <input
           class="form-control"
-          type="text"
-          name="zipCode"
-          placeholder="Zip Code"
-          id="inputZipCode"
-          pattern="\d*"
+          type="password"
+          name="password"
+          id="inputPassword"
+          placeholder="Enter your password"
           required
         />
       </div>

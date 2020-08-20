@@ -12,7 +12,8 @@ const mongoose = require("mongoose"),
   methodOverride = require("method-override"),
   connectFlash = require("connect-flash"),
   cookieParser = require("cookie-parser"),
-  expressSession = require("express-session");
+  expressSession = require("express-session"),
+  expressValidator = require("express-validator");
 require("dotenv").config();
 
 mongoose.Promise = global.Promise;
@@ -36,12 +37,11 @@ app.set("view engine", "ejs");
 app.use("/", router);
 router.use(express.urlencoded({ extended: false }));
 router.use(express.json());
+router.use(expressValidator());
 router.use(partials());
 router.use(express.static("public"));
 router.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
-router.get("view engine");
-router.get("/", homeController.showHome);
 router.use(cookieParser(process.env.secret));
 router.use(
   expressSession({
@@ -56,24 +56,28 @@ router.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
   next();
 });
-// Users
-// Get all users
+
+router.get("view engine");
+// HOME
+router.get("/", homeController.showHome);
+// USERS
 router.get("/users", usersController.index, usersController.indexView);
-// Get new user's form
 router.get("/users/new", usersController.new);
-// Get user with id
+router.get("/users/login", usersController.login);
+router.post(
+  "/users/login",
+  usersController.authenticate,
+  usersController.redirectView
+);
 router.get("/users/:id", usersController.show, usersController.showView);
-//  Edit user details
 // router.get("/users/:id/edit", usersController.edit, usersController.editView);
 router.get("/users/:id/edit", usersController.edit);
-
-// Submit: create new user form
 router.post(
   "/users/create",
+  usersController.validate,
   usersController.create,
   usersController.redirectView
 );
-// Submit: update user edited profile
 router.put(
   "/users/:id/update",
   usersController.update,
@@ -86,29 +90,23 @@ router.delete(
 );
 
 // Subscribers
-// Get all subscribers
 router.get(
   "/subscribers",
   subscribersController.index,
   subscribersController.indexView
 );
-// Get new subscriber's form
 router.get("/subscribers/new", subscribersController.new);
-// Get subscriber with id
 router.get(
   "/subscribers/:id",
   subscribersController.show,
   subscribersController.showView
 );
-//  Edit user details
 router.get("/subscribers/:id/edit", subscribersController.edit);
-// Submit: create new subscriber form
 router.post(
   "/subscribers/create",
   subscribersController.create,
   subscribersController.redirectView
 );
-// Submit: update user edited profile
 router.put(
   "/subscribers/:id/update",
   subscribersController.update,
@@ -121,21 +119,15 @@ router.delete(
 );
 
 // Course
-// Get all Course
 router.get("/courses", courseController.index, courseController.indexView);
-// Get new Course's form
 router.get("/courses/new", courseController.new);
-// Get Course with id
 router.get("/courses/:id", courseController.show, courseController.showView);
-//  Edit user details
 router.get("/courses/:id/edit", courseController.edit);
-// Submit: create new Course form
 router.post(
   "/courses/create",
   courseController.create,
   courseController.redirectView
 );
-// Submit: update Course edited profile
 router.put(
   "/courses/:id/update",
   courseController.update,
