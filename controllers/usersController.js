@@ -30,6 +30,9 @@ module.exports = {
     res.render("users/new");
   },
   validate: (req, res, next) => {
+    // Example: Check if name is empty field, using server-side
+    req.check("first", "First name can't be empty").isLength({ min: 2 });
+    req.check("last", "Last name can't be empty").isLength({ min: 2 });
     // Remove whitespace with the trim method.
     req
       .sanitizeBody("email")

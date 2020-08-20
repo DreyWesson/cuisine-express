@@ -21,6 +21,7 @@ mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
+  useCreateIndex: true,
 });
 const client = mongoose.connect;
 var db = mongoose.createConnection(url, {
