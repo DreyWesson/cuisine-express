@@ -48,17 +48,21 @@
       button a:hover {
         text-decoration: none;
       }
-      button#logout {
+      button#logout,
+      button#login {
         border-radius: 15px;
         border: 1px solid #6c757d;
       }
-      button#logout a {
+      button#logout a,
+      button#login a {
         color: #6c757d;
       }
-      button#logout:hover {
+      button#logout:hover,
+      button#login:hover {
         background: #6c757d;
       }
-      button#logout:hover a {
+      button#logout:hover a,
+      button#login:hover a {
         color: white;
       }
       /* #logout a,
@@ -122,35 +126,28 @@
             </li>
           </ul>
           <% if (loggedIn) { %>
-          <button id="logout" class="btn text-center w-100 m-1">
-            <a href="/users/logout">Log Out</a>
-          </button>
           <div
-            class="bg-secondary m-1 text-center"
+            class="m-1 text-center"
             style="
               border-radius: 30px;
               width: 100%;
-              color: #ffffff;
+              color: #6c757d;
               padding: 10px 12px;
             "
           >
             <div class="d-flex flex-column">
               <small>Logged in as:</small>
-              <a
-                href="<%=`/users/${currentUser._id}`%>"
-                style="color: #ffde33;"
-              >
+              <a href="<%=`/users/${currentUser._id}`%>" style="color: black;">
                 <%= currentUser.fullName %></a
               >
             </div>
           </div>
+          <button id="logout" class="btn text-center w-100 m-1">
+            <a href="/users/logout">Log Out</a>
+          </button>
 
           <%} else {%>
-          <button
-            id="login"
-            class="btn btn-outline-secondary m-1 p-1 text-center"
-            style="border-radius: 20px;"
-          >
+          <button id="login" class="btn text-center w-100 m-1">
             <a href="/users/login">Log In</a>
           </button>
           <% } %>
