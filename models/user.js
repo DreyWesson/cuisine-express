@@ -1,5 +1,6 @@
 const mongoose = require("mongoose"),
-  bcrypt = require("bcrypt"),
+  passportLocalMongoose = require("passport-local-mongoose"),
+  // bcrypt = require("bcrypt"),
   { Schema } = mongoose,
   userSchema = new Schema(
     {
@@ -20,10 +21,10 @@ const mongoose = require("mongoose"),
         unique: true,
       },
       zipCode: { type: Number, min: [1000, "Zip code too short"], max: 99999 },
-      password: {
-        type: String,
-        required: true,
-      },
+      // password: {
+      //   type: String,
+      //   required: true,
+      // },
       courses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
       subscribedAccount: { type: Schema.Types.ObjectId, ref: "Subscriber" },
     },
@@ -52,23 +53,23 @@ userSchema.pre("save", function (next) {
     next();
   }
 });
-userSchema.pre("save", function (next) {
-  let user = this;
-  bcrypt
-    .hash(user.password, 10)
-    .then((hash) => {
-      user.password = hash;
-      next();
-    })
-    .catch((error) => {
-      console.log(`Error in hashing password: ${error.message}`);
-      next(error);
-    });
-});
-userSchema.methods.passwordComparison = function (inputPassword) {
-  let user = this;
-  return bcrypt.compare(inputPassword, user.password);
-};
+// userSchema.pre("save", function (next) {
+//   let user = this;
+//   bcrypt
+//     .hash(user.password, 10)
+//     .then((hash) => {
+//       user.password = hash;
+//       next();
+//     })
+//     .catch((error) => {
+//       console.log(`Error in hashing password: ${error.message}`);
+//       next(error);
+//     });
+// });
+// userSchema.methods.passwordComparison = function (inputPassword) {
+//   let user = this;
+//   return bcrypt.compare(inputPassword, user.password);
+// };
 
 userSchema.virtual("fullName").get(function () {
   return `${this.name.first} ${this.name.last}`;
@@ -76,6 +77,7 @@ userSchema.virtual("fullName").get(function () {
 userSchema.virtual("nickname").get(function () {
   return `${this.name.first}${this.zipCode}`;
 });
+userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 module.exports = mongoose.model("User", userSchema);
 // Method 2: Require here at the bottom due to circular dependencies issues
 // between User&Subscriber model

@@ -48,6 +48,14 @@
       button a:hover {
         text-decoration: none;
       }
+      #logout a,
+      #login a {
+        color: #6c757d;
+      }
+      #logout a:hover,
+      #login a:hover {
+        color: white;
+      }
     </style>
     <!-- <link rel="stylesheet" href="/confetti_cuisine.css" /> -->
   </head>
@@ -96,6 +104,36 @@
               <a class="nav-link" href="/users" title="users">Users</a>
             </li>
           </ul>
+          <% if (loggedIn) { %>
+          <button
+            id="logout"
+            class="btn btn-outline-secondary m-1 p-1 text-center"
+            style="border-radius: 20px;"
+          >
+            <a href="/users/logout">Log Out</a>
+          </button>
+          <div
+            class="bg-secondary m-1 text-center"
+            style="border-radius: 20px; color: #ffffff; padding: 10px 12px;"
+          >
+            Logged in as
+            <a
+              href="<%=`/users/${currentUser._id}`%>"
+              style="margin-left: 5px; color: #ffde33;"
+            >
+              <%= currentUser.fullName %></a
+            >
+          </div>
+
+          <%} else {%>
+          <button
+            id="login"
+            class="btn btn-outline-secondary m-1 p-1 text-center"
+            style="border-radius: 20px;"
+          >
+            <a href="/users/login">Log In</a>
+          </button>
+          <% } %>
         </div>
       </nav>
     </div>

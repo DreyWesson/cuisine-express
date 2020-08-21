@@ -13,9 +13,11 @@ const mongoose = require("mongoose"),
   connectFlash = require("connect-flash"),
   cookieParser = require("cookie-parser"),
   expressSession = require("express-session"),
-  expressValidator = require("express-validator");
+  expressValidator = require("express-validator"),
+  passport = require("passport");
 require("dotenv").config();
 
+const User = mongoose.model("User");
 mongoose.Promise = global.Promise;
 mongoose.connect(url, {
   useNewUrlParser: true,
@@ -53,7 +55,16 @@ router.use(
   })
 );
 router.use(connectFlash());
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 router.use((req, res, next) => {
+  // Set up the loggedIn variable to reflect passport login status.
+  res.locals.loggedIn = req.isAuthenticated();
+  // Set up the currentUser to reflect a logged-in user.
+  res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
 });
@@ -65,9 +76,10 @@ router.get("/", homeController.showHome);
 router.get("/users", usersController.index, usersController.indexView);
 router.get("/users/new", usersController.new);
 router.get("/users/login", usersController.login);
-router.post(
-  "/users/login",
-  usersController.authenticate,
+router.post("/users/login", usersController.authenticate);
+router.get(
+  "/users/logout",
+  usersController.logout,
   usersController.redirectView
 );
 router.get("/users/:id", usersController.show, usersController.showView);
