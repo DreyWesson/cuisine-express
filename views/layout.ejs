@@ -48,7 +48,20 @@
       button a:hover {
         text-decoration: none;
       }
-      #logout a,
+      button#logout {
+        border-radius: 15px;
+        border: 1px solid #6c757d;
+      }
+      button#logout a {
+        color: #6c757d;
+      }
+      button#logout:hover {
+        background: #6c757d;
+      }
+      button#logout:hover a {
+        color: white;
+      }
+      /* #logout a,
       #login a {
         color: #6c757d;
       }
@@ -59,7 +72,7 @@
       }
       #logout a:hover {
         color: white;
-      }
+      } */
     </style>
     <!-- <link rel="stylesheet" href="/confetti_cuisine.css" /> -->
   </head>
@@ -90,47 +103,46 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active px-5 text-center">
+          <ul class="navbar-nav ml-auto text-center">
+            <li class="nav-item active px-5">
               <a class="nav-link" href="/"
                 >Home <span class="sr-only">(current)</span></a
               >
             </li>
-            <li class="nav-item px-5 text-center">
+            <li class="nav-item px-5">
               <a class="nav-link" href="/courses" title="courses">Courses</a>
             </li>
-            <li class="nav-item px-5 text-center">
+            <li class="nav-item px-5">
               <a class="nav-link" href="/subscribers" title="contact"
                 >Contact</a
               >
             </li>
-            <li class="nav-item px-5 text-center">
+            <li class="nav-item px-5">
               <a class="nav-link" href="/users" title="users">Users</a>
             </li>
           </ul>
           <% if (loggedIn) { %>
-          <div
-            id="logout"
-            class="mr-2 my-1 text-center"
-            style="
-              border-radius: 20px;
-              border: 1px solid #6c757d;
-              padding: 6px 8px;
-            "
-          >
+          <button id="logout" class="btn text-center w-100 m-1">
             <a href="/users/logout">Log Out</a>
-          </div>
+          </button>
           <div
             class="bg-secondary m-1 text-center"
-            style="border-radius: 20px; color: #ffffff; padding: 10px 12px;"
+            style="
+              border-radius: 30px;
+              width: 100%;
+              color: #ffffff;
+              padding: 10px 12px;
+            "
           >
-            <small>Logged in as</small>
-            <a
-              href="<%=`/users/${currentUser._id}`%>"
-              style="margin-left: 5px; color: #ffde33;"
-            >
-              <%= currentUser.fullName %></a
-            >
+            <div class="d-flex flex-column">
+              <small>Logged in as:</small>
+              <a
+                href="<%=`/users/${currentUser._id}`%>"
+                style="color: #ffde33;"
+              >
+                <%= currentUser.fullName %></a
+              >
+            </div>
           </div>
 
           <%} else {%>
