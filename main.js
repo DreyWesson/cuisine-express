@@ -44,7 +44,6 @@ router.use(expressValidator());
 router.use(partials());
 router.use(express.static("public"));
 router.use(methodOverride("_method", { methods: ["POST", "GET"] }));
-
 router.use(cookieParser(process.env.secret));
 router.use(
   expressSession({
