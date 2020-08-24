@@ -27,9 +27,11 @@ module.exports = {
   indexView: (req, res) => {
     res.render("users/index");
   },
+
   new: (req, res) => {
     res.render("users/new");
   },
+
   validate: (req, res, next) => {
     // Example: Check if name is empty field, using server-side
     req.check("first", "First name can't be empty").isLength({ min: 2 });
@@ -67,31 +69,7 @@ module.exports = {
       }
     });
   },
-  // Bcrypt
-  // create: (req, res, next) => {
-  //   let userParams = getUserParams(req.body);
-  //   if (req.skip) next();
-  //   else {
-  //     User.create(userParams)
-  //       .then((users) => {
-  //         req.flash(
-  //           "success",
-  //           `${users.fullName}'s account created successfully!`
-  //         );
-  //         res.locals.redirect = "/users";
-  //         res.locals.users = users;
-  //         next();
-  //       })
-  //       .catch((error) => {
-  //         console.log(`Error saving user: ${error.message}`);
-  //         req.flash(
-  //           "error",
-  //           `Failed to create user account because: ${error.message}.`
-  //         );
-  //         next(error);
-  //       });
-  //   }
-  // },
+
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
@@ -120,6 +98,7 @@ module.exports = {
     if (redirectPath) res.redirect(redirectPath);
     else next();
   },
+
   show: (req, res, next) => {
     let userId = req.params.id;
     User.findById(userId)
@@ -135,20 +114,6 @@ module.exports = {
   },
   showView: (req, res) => res.render("users/show"),
 
-  // edit: (req, res, next) => {
-  //   let userId = req.params.id;
-  //   User.findById(userId)
-  //     .then((user) => {
-  //       res.locals.user = user;
-  //       next();
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Error fetching user by ID: ${error.message}`);
-  //       next(error);
-  //     });
-  // },
-  // editView: (req, res) => res.render("users/edit"),
-  // OR
   edit: (req, res, next) => {
     let userId = req.params.id;
     User.findById(userId)
@@ -161,6 +126,7 @@ module.exports = {
         next(error);
       });
   },
+
   update: (req, res, next) => {
     let userId = req.params.id,
       userParams = getUserParams(req.body);
@@ -183,6 +149,7 @@ module.exports = {
         next(error);
       });
   },
+
   delete: (req, res, next) => {
     let userId = req.params.id;
     User.findByIdAndRemove(userId)
@@ -197,6 +164,7 @@ module.exports = {
         next();
       });
   },
+
   login: (req, res) => {
     res.render("users/login");
   },
@@ -206,46 +174,11 @@ module.exports = {
     successRedirect: "/",
     successFlash: "Logged in!",
   }),
+
   logout: (req, res, next) => {
     req.logout();
     req.flash("success", "You have been logged out!");
     res.locals.redirect = "/";
     next();
   },
-  // bcrypt
-  // authenticate: (req, res, next) => {
-  //   User.findOne({ email: req.body.email })
-  //     .then((user) => {
-  //       if (user) {
-  //         user.passwordComparison(req.body.password).then((passwordsMatch) => {
-  //           if (passwordsMatch) {
-  //             res.locals.redirect = `/users/${user._id}`;
-  //             req.flash(
-  //               "success",
-  //               `${user.fullName}'s logged in successfully!`
-  //             );
-  //             res.locals.user = user;
-  //           } else {
-  //             req.flash(
-  //               "error",
-  //               "Failed to log in user account: Incorrect Password."
-  //             );
-  //             res.locals.redirect = "/users/login";
-  //           }
-  //           next();
-  //         });
-  //       } else {
-  //         req.flash(
-  //           "error",
-  //           "Failed to log in user account: User account not found."
-  //         );
-  //         res.locals.redirect = "/users/login";
-  //         next();
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Error logging in user: ${error.message}`);
-  //       next(error);
-  //     });
-  // },
 };
