@@ -1,5 +1,7 @@
 const User = require("../models/user"),
+  httpStatus = require("http-status-codes"),
   passport = require("passport"),
+  token = process.env.TOKEN || "recipeT0k3n",
   getUserParams = (body) => {
     return {
       name: {
@@ -69,7 +71,23 @@ module.exports = {
       }
     });
   },
-
+  // verifyToken: (req, res, next) => {
+  //   if (req.query.apiToken === token) next();
+  //   else next(new Error("Invalid API token."));
+  // },
+  // verifyToken: (req, res, next) => {
+  //   let token = req.query.apiToken;
+  //   if (token) {
+  //     User.findOne({ apiToken: token })
+  //       .then((user) => {
+  //         if (user) next();
+  //         else next(new Error("Invalid API token."));
+  //       })
+  //       .catch((error) => next(new Error(error.message)));
+  //   } else {
+  //     next(new Error("Invalid API token."));
+  //   }
+  // },
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
@@ -180,5 +198,26 @@ module.exports = {
     req.flash("success", "You have been logged out!");
     res.locals.redirect = "/";
     next();
+  },
+  respondJSON: (req, res) => {
+    res.json({
+      status: httpStatus.OK,
+      data: res.locals,
+    });
+  },
+  errorJSON: (error, req, res, next) => {
+    let errorObject;
+    if (error) {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    } else {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: "Unknown Error.",
+      };
+    }
+    res.json(errorObject);
   },
 };

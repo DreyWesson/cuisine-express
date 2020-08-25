@@ -1,4 +1,5 @@
 const Subscriber = require("../models/subscribers"),
+  httpStatus = require("http-status-codes"),
   getSubscriberParams = (body) => {
     return {
       name: body.name,
@@ -20,7 +21,12 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("subscribers/index");
+    if (req.query.format === "json") {
+      res.json(res.locals.subscribers);
+    } else {
+      // res.render("users/index");
+      res.render("subscribers/index");
+    }
   },
   new: (req, res) => {
     res.render("subscribers/new");
@@ -121,5 +127,26 @@ module.exports = {
         );
         next();
       });
+  },
+  respondJSON: (req, res) => {
+    res.json({
+      status: httpStatus.OK,
+      data: res.locals,
+    });
+  },
+  errorJSON: (error, req, res, next) => {
+    let errorObject;
+    if (error) {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message,
+      };
+    } else {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: "Unknown Error.",
+      };
+    }
+    res.json(errorObject);
   },
 };
