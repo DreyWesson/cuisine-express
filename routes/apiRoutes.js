@@ -2,7 +2,7 @@ const router = require("express").Router(),
   coursesController = require("../controllers/courseController"),
   usersController = require("../controllers/usersController"),
   subscribersController = require("../controllers/subscribersController");
-router.use(usersController.verifyToken);
+// router.use(usersController.verifyToken);
 // Courses
 router.get(
   "/courses/:id/join",
@@ -28,5 +28,6 @@ router.get(
   subscribersController.index,
   subscribersController.respondJSON
 );
+router.post("/login", usersController.apiAuthenticate);
 router.use(subscribersController.errorJSON);
 module.exports = router;

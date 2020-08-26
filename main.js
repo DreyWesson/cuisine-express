@@ -66,6 +66,7 @@ app.use((req, res, next) => {
 
 app.get("view engine");
 app.use("/", router);
+app.get("token");
 
 let port = app.get("port");
 app.listen(port, () => {

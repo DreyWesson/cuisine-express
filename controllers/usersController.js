@@ -2,17 +2,18 @@ const User = require("../models/user"),
   httpStatus = require("http-status-codes"),
   passport = require("passport"),
   token = process.env.TOKEN || "recipeT0k3n",
-  getUserParams = (body) => {
-    return {
-      name: {
-        first: body.first,
-        last: body.last,
-      },
-      email: body.email,
-      password: body.password,
-      zipCode: parseInt(body.zipCode),
-    };
+  jsonWebToken = require("jsonwebtoken");
+getUserParams = (body) => {
+  return {
+    name: {
+      first: body.first,
+      last: body.last,
+    },
+    email: body.email,
+    password: body.password,
+    zipCode: parseInt(body.zipCode),
   };
+};
 
 module.exports = {
   index: (req, res, next) => {
@@ -71,19 +72,21 @@ module.exports = {
       }
     });
   },
-  verifyToken: (req, res, next) => {
-    let token = req.query.apiToken;
-    if (token) {
-      User.findOne({ apiToken: token })
-        .then((user) => {
-          if (user) next();
-          else next(new Error("Invalid API token."));
-        })
-        .catch((error) => next(new Error(error.message)));
-    } else {
-      next(new Error("Invalid API token."));
-    }
-  },
+
+  // verifyToken: (req, res, next) => {
+  //   let token = req.query.apiToken;
+  //   if (token) {
+  //     User.findOne({ apiToken: token })
+  //       .then((user) => {
+  //         if (user) next();
+  //         else next(new Error("Invalid API token."));
+  //       })
+  //       .catch((error) => next(new Error(error.message)));
+  //   } else {
+  //     next(new Error("Invalid API token."));
+  //   }
+  // },
+
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
@@ -106,7 +109,6 @@ module.exports = {
       }
     });
   },
-
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
     if (redirectPath) res.redirect(redirectPath);
@@ -182,6 +184,7 @@ module.exports = {
   login: (req, res) => {
     res.render("users/login");
   },
+
   authenticate: passport.authenticate("local", {
     failureRedirect: "/users/login",
     failureFlash: "Failed to login. Wrong password or email.",
@@ -189,18 +192,36 @@ module.exports = {
     successFlash: "Logged in!",
   }),
 
+  apiAuthenticate: (req, res, next) => {
+    passport.authenticate("local", (errors, user) => {
+      if (user) {
+        let signedToken = jsonWebToken.sign(
+          { data: user._id, exp: new Date().setDate(new Date().getDate() + 1) },
+          "secret_encoding_passphrase"
+        );
+        res.json({
+          success: true,
+          token: signedToken,
+        });
+      } else
+        res.json({ success: false, message: "Could not authenticate user." });
+    })(req, res, next);
+  },
+
   logout: (req, res, next) => {
     req.logout();
     req.flash("success", "You have been logged out!");
     res.locals.redirect = "/";
     next();
   },
+
   respondJSON: (req, res) => {
     res.json({
       status: httpStatus.OK,
       data: res.locals,
     });
   },
+
   errorJSON: (error, req, res, next) => {
     let errorObject;
     if (error) {
