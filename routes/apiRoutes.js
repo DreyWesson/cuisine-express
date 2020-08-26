@@ -2,6 +2,9 @@ const router = require("express").Router(),
   coursesController = require("../controllers/courseController"),
   usersController = require("../controllers/usersController"),
   subscribersController = require("../controllers/subscribersController");
+
+router.post("/login", usersController.apiAuthenticate);
+router.use(usersController.verifyJWT);
 // router.use(usersController.verifyToken);
 // Courses
 router.get(

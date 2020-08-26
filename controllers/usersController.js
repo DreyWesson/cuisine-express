@@ -87,6 +87,45 @@ module.exports = {
   //   }
   // },
 
+  verifyJWT: (req, res, next) => {
+    // Retrieve the JWT from request headers.
+    let token = req.headers.token;
+    if (token) {
+      // Verify the JWT, and decode its payload.
+      jsonWebToken.verify(
+        token,
+        "secret_encoding_passphrase",
+        (errors, payload) => {
+          if (payload) {
+            // Check for a user with the decoded user ID from the JWT payload.
+            User.findById(payload.data).then((user) => {
+              if (user) {
+                // Call the next middleware function if a user is found with the JWT ID
+                next();
+              } else {
+                res.status(httpStatus.FORBIDDEN).json({
+                  error: true,
+                  message: "No User account found.",
+                });
+              }
+            });
+          } else {
+            res.status(httpStatus.UNAUTHORIZED).json({
+              error: true,
+              message: "Cannot verify API token.",
+            });
+            next();
+          }
+        }
+      );
+    } else {
+      res.status(httpStatus.UNAUTHORIZED).json({
+        error: true,
+        message: "Provide Token",
+      });
+    }
+  },
+
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
@@ -191,6 +230,22 @@ module.exports = {
     successRedirect: "/",
     successFlash: "Logged in!",
   }),
+
+  apiAuthenticate: (req, res, next) => {
+    passport.authenticate("local", (errors, user) => {
+      if (user) {
+        let signedToken = jsonWebToken.sign(
+          { data: user._id, exp: new Date().setDate(new Date().getDate() + 1) },
+          "secret_encoding_passphrase"
+        );
+        res.json({
+          success: true,
+          token: signedToken,
+        });
+      } else
+        res.json({ success: false, message: "Could not authenticate user." });
+    })(req, res, next);
+  },
 
   apiAuthenticate: (req, res, next) => {
     passport.authenticate("local", (errors, user) => {
