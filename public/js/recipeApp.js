@@ -6,25 +6,25 @@ $(document).ready(() => {
       if (!data || !data.courses) return;
       data.courses.forEach((course) => {
         $(".modal-body").append(`
-          <div class="media text-left ">
-            <div class="align-self-start mr-3">
-              <i class="far fa-book h5 text-secondary"></i>
-            </div>
-            <div class="media-body">
-              <h5 class="course-title mt-0">${course.title}</h5>
-              <p class="course-description"> ${course.description}
-            </p>
-            </div>
-            <button 
-              class='btn btn-outline-secondary mr-2 ${
-                course.joined ? "btn-outline-success" : "btn-outline-primary"
-              }' data-id="${course._id}">
-                ${course.joined ? "Joined" : "Join"}
-            </button>
-            <button class="join-button btn btn-outline-primary align-self-start" data-id="${
-              course._id
-            }"> Join</button>
-          </div>
+        <div class="media text-left ">
+        <div class="align-self-start mr-3">
+        <i class="far fa-book h5 text-secondary"></i>
+        </div>
+        <div class="media-body">
+        <h5 class="course-title mt-0">${course.title}</h5>
+        <p class="course-description"> ${course.description}
+        </p>
+        </div>
+        <button 
+        class='btn btn-outline-secondary mr-2 ${
+          course.joined ? "btn-outline-success" : "btn-outline-primary"
+        }' data-id="${course._id}">
+        ${course.joined ? "Joined" : "Join"}
+        </button>
+        <button class="join-button btn btn-outline-primary align-self-start" data-id="${
+          course._id
+        }"> Join</button>
+        </div>
         `);
       });
     }).then(() => {
@@ -48,4 +48,19 @@ let addJoinButtonListener = () => {
       }
     });
   });
+};
+
+const socket = io();
+$("#chatForm").submit(() => {
+  socket.emit("message");
+  $("#chat-input").val("");
+  return false;
+});
+
+socket.on("message", (message) => {
+  displayMessage(message.content);
+});
+
+let displayMessage = (message) => {
+  $("#chat").prepend($("<li>").html(message));
 };
