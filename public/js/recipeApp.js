@@ -68,7 +68,7 @@ socket.on("message", (message) => {
 });
 
 let displayMessage = (message) => {
-  $("#chat").prepend(
+  $("#chat").append(
     $("<li>").html(`
     <div class="d-flex">
       <small class="m-2">${message.userName}:</small>
@@ -83,3 +83,8 @@ let getCurrentUserClass = (id) => {
   let userId = $("#chat-user-id").val();
   return userId === id ? "current-user" : "";
 };
+socket.on("load all messages", (data) => {
+  data.forEach((message) => {
+    displayMessage(message);
+  });
+});
