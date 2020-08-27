@@ -1,4 +1,5 @@
 const Message = require("../models/message");
+const User = require("../models/user");
 
 module.exports = (io) => {
   io.on("connection", (client) => {
@@ -22,9 +23,13 @@ module.exports = (io) => {
           user: data.userId,
         },
         m = new Message(messageAttributes);
-      m.save()
-        .then(() => io.emit("message", messageAttributes))
-        .catch((error) => console.log(`error: ${error.message}`));
+      if (User.findById(data.userId)) {
+        m.save()
+          .then(() => io.emit("message", messageAttributes))
+          .catch((error) => console.log(`error: ${error.message}`));
+      } else {
+        console.log("User not found");
+      }
     });
   });
 };

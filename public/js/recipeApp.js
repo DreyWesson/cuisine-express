@@ -60,7 +60,7 @@ $("#chatForm").submit(() => {
     userName: userName,
     userId: userId,
   });
-  $("#chat_input").val("");
+  $("#chat-input").val("");
   return false;
 });
 socket.on("message", (message) => {
