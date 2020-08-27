@@ -88,3 +88,10 @@ socket.on("load all messages", (data) => {
     displayMessage(message);
   });
 });
+socket.on("user disconnected", () => {
+  console.log("User disconnected");
+  displayMessage({
+    userName: "Notice",
+    content: "User left the chat",
+  });
+});
