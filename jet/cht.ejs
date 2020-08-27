@@ -1,0 +1,39 @@
+<div class="container">
+  <% if (currentUser) { %>
+  <h1>Chat</h1>
+  <div
+    id="chat"
+    class="container mb-2"
+    style="min-height: 400px; min-width: 400px; border: 1px solid #ced4da;"
+  ></div>
+  <form id="chatForm" class="form-group">
+    <div class="input-group mb-3">
+      <label for="chat-input" class="sr-only">Type Message</label>
+      <input
+        id="chat-input"
+        type="text"
+        class="form-control"
+        aria-label="Enter message"
+        aria-describedby="message"
+        placeholder="Enter message"
+      />
+      <label for="chat-user-name" class="sr-only">Username</label>
+      <input
+        id="chat-user-name"
+        type="hidden"
+        value="<%= currentUser.fullName %>"
+      />
+      <label for="chat-user-id" class="sr-only"> User ID</label>
+      <input id="chat-user-id" type="hidden" value="<%= currentUser._id %>" />
+      <button
+        class="input-group-append btn btn-primary"
+        type="submit"
+        id="message"
+      >
+        Send
+      </button>
+    </div>
+  </form>
+
+  <% } %>
+</div>

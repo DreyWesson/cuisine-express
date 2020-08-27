@@ -1,8 +1,14 @@
 const Message = require("../models/message");
+
 module.exports = (io) => {
   io.on("connection", (client) => {
-    console.log("new connection");
-
+    console.log("new connection...");
+    Message.find({})
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .then((messages) => {
+        client.emit("load all messages", messages.reverse());
+      });
     client.on("disconnect", () => {
       console.log("user disconnected");
     });
@@ -15,9 +21,7 @@ module.exports = (io) => {
         },
         m = new Message(messageAttributes);
       m.save()
-        .then(() => {
-          io.emit("message", messageAttributes);
-        })
+        .then(() => io.emit("message", messageAttributes))
         .catch((error) => console.log(`error: ${error.message}`));
     });
   });
