@@ -98,3 +98,10 @@ socket.on("user disconnected", () => {
     content: "User left the chat",
   });
 });
+socket.on("user connected", () => {
+  console.log("User disconnected");
+  displayMessage({
+    userName: "Notice",
+    content: "User joined the chat",
+  });
+});

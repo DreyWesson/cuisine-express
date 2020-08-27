@@ -3,7 +3,8 @@ const User = require("../models/user");
 
 module.exports = (io) => {
   io.on("connection", (client) => {
-    console.log("new connection");
+    client.broadcast.emit("user connected");
+    console.log("user connected");
 
     Message.find({})
       .sort({ createdAt: -1 })
