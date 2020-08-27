@@ -153,8 +153,16 @@
           <% } %>
         </div>
       </nav>
+      <div
+        style="
+          display: inline-block;
+          position: relative;
+          transform: translateY(-100%);
+        "
+      >
+        <a href="/chat" class="chat-icon"><i class="fas fa-at h4"></i></a>
+      </div>
     </div>
-
     <div class="flashes">
       <% if (flashMessages) { %> <% if (flashMessages.success) { %>
       <div

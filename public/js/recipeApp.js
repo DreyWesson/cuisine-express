@@ -65,6 +65,9 @@ $("#chatForm").submit(() => {
 });
 socket.on("message", (message) => {
   displayMessage(message);
+  for (let i = 0; i < 3; i++) {
+    $(".chat-icon").fadeOut(200).fadeIn(200);
+  }
 });
 
 let displayMessage = (message) => {
