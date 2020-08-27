@@ -52,15 +52,27 @@ let addJoinButtonListener = () => {
 
 const socket = io();
 $("#chatForm").submit(() => {
-  socket.emit("message");
+  let text = $("#chat-input").val(),
+    userId = $("#chat-user-id").val();
+  socket.emit("message", {
+    content: text,
+    userId: userId,
+  });
   $("#chat-input").val("");
   return false;
 });
-
 socket.on("message", (message) => {
-  displayMessage(message.content);
+  displayMessage(message);
 });
 
 let displayMessage = (message) => {
-  $("#chat").prepend($("<li>").html(message));
+  $("#chat").prepend(
+    $("<li>").html(`
+  <div class="message ${getCurrentUserClass(message.user)}"> ${message.content}
+  </div>`)
+  );
+};
+let getCurrentUserClass = (id) => {
+  let userId = $("#chat-user-id").val();
+  return userId === id ? "current-user" : "";
 };
