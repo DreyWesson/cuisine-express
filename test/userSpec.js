@@ -4,7 +4,7 @@ const User = require("../models/user"),
 require("../main");
 
 beforeEach((done) => {
-  User.deleteOne({}).then(() => {
+  User.deleteMany({}).then(() => {
     done();
   });
 });

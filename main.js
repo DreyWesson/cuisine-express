@@ -10,12 +10,9 @@ const mongoose = require("mongoose"),
   expressValidator = require("express-validator"),
   passport = require("passport");
 require("dotenv").config();
-
 const router = require("./routes/index");
 
 const User = mongoose.model("User");
-
-mongoose.Promise = global.Promise;
 
 let testDB = "recipe_test_db",
   mainDB = "recipe_db",
@@ -26,6 +23,7 @@ let testDB = "recipe_test_db",
     useCreateIndex: true,
   };
 
+mongoose.Promise = global.Promise;
 function mongoDB(selectDB, inBuiltObj, port) {
   let selectEnv =
     process.env.MONGODB_URI || `mongodb://localhost:27017/${selectDB}`;
