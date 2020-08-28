@@ -1,5 +1,4 @@
 const mongoose = require("mongoose"),
-  url = "mongodb://localhost/recipe_db",
   express = require("express"),
   app = express(),
   partials = require("express-partials"),
@@ -8,7 +7,8 @@ const mongoose = require("mongoose"),
   cookieParser = require("cookie-parser"),
   expressSession = require("express-session"),
   expressValidator = require("express-validator"),
-  passport = require("passport");
+  passport = require("passport"),
+  morgan = require("morgan");
 require("dotenv").config();
 const router = require("./routes/index");
 
@@ -30,7 +30,7 @@ function mongoDB(selectDB, inBuiltObj, port) {
 
   mongoose.connect(selectEnv, inBuiltObj);
 
-  const client = mongoose.connect;
+  // const client = mongoose.connect;
   mongoose
     .createConnection(selectEnv, inBuiltObj)
     .once("open", () =>
@@ -47,6 +47,7 @@ else mongoDB(mainDB, mongooseObjects, 3000);
 app.set("view engine", "ejs");
 app.set("token", process.env.TOKEN || "recipeT0k3n");
 
+app.use(morgan("combined"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(expressValidator());

@@ -1,7 +1,6 @@
 const User = require("../models/user"),
   httpStatus = require("http-status-codes"),
   passport = require("passport"),
-  token = process.env.TOKEN || "recipeT0k3n",
   jsonWebToken = require("jsonwebtoken"),
   getUserParams = (body) => {
     return {
@@ -271,6 +270,7 @@ module.exports = {
         status: httpStatus.INTERNAL_SERVER_ERROR,
         message: error.message,
       };
+      next();
     } else {
       errorObject = {
         status: httpStatus.INTERNAL_SERVER_ERROR,
