@@ -16,7 +16,7 @@ const router = require("./routes/index");
 const User = mongoose.model("User");
 mongoose.Promise = global.Promise;
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://local- host:27017/recipe_db",
+  process.env.MONGODB_URI || "mongodb://localhost:27017/recipe_db",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
