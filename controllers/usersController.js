@@ -247,22 +247,6 @@ module.exports = {
     })(req, res, next);
   },
 
-  apiAuthenticate: (req, res, next) => {
-    passport.authenticate("local", (errors, user) => {
-      if (user) {
-        let signedToken = jsonWebToken.sign(
-          { data: user._id, exp: new Date().setDate(new Date().getDate() + 1) },
-          "secret_encoding_passphrase"
-        );
-        res.json({
-          success: true,
-          token: signedToken,
-        });
-      } else
-        res.json({ success: false, message: "Could not authenticate user." });
-    })(req, res, next);
-  },
-
   logout: (req, res, next) => {
     req.logout();
     req.flash("success", "You have been logged out!");
