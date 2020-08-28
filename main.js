@@ -25,10 +25,13 @@ mongoose.connect(
   }
 );
 const client = mongoose.connect;
-var db = mongoose.createConnection(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+var db = mongoose.createConnection(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/recipe_db",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 db.once("open", () => {
   console.log("Successfully connected to MongoDB using Mongoose!");
 });
