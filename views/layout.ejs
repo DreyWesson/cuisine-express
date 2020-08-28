@@ -140,13 +140,20 @@
               >
             </div>
           </div>
-          <button id="logout" class="btn text-center w-100 m-1">
-            <a href="/users/logout">Log Out</a>
+          <button
+            id="logout"
+            class="btn text-center w-100 m-1"
+            onclick="location.href='/users/logout'"
+          >
+            Log Out
           </button>
-
           <%} else {%>
-          <button id="login" class="btn text-center w-100 m-1">
-            <a href="/users/login">Log In</a>
+          <button
+            id="login"
+            class="btn text-center w-100 m-1"
+            onclick="location.href='/users/login'"
+          >
+            Log In
           </button>
           <% } %>
         </div>

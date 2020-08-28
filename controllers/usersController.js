@@ -2,20 +2,22 @@ const User = require("../models/user"),
   httpStatus = require("http-status-codes"),
   passport = require("passport"),
   token = process.env.TOKEN || "recipeT0k3n",
-  jsonWebToken = require("jsonwebtoken");
-getUserParams = (body) => {
-  return {
-    name: {
-      first: body.first,
-      last: body.last,
-    },
-    email: body.email,
-    password: body.password,
-    zipCode: parseInt(body.zipCode),
+  jsonWebToken = require("jsonwebtoken"),
+  getUserParams = (body) => {
+    return {
+      name: {
+        first: body.first,
+        last: body.last,
+      },
+      email: body.email,
+      password: body.password,
+      zipCode: parseInt(body.zipCode),
+    };
   };
-};
 
 module.exports = {
+  // export getUserParams for test
+  getUserParams,
   index: (req, res, next) => {
     User.find()
       .then((users) => {
@@ -129,6 +131,7 @@ module.exports = {
   create: (req, res, next) => {
     if (req.skip) next();
     let newUser = new User(getUserParams(req.body));
+
     User.register(newUser, req.body.password, (error, user) => {
       if (user) {
         req.flash(

@@ -14,29 +14,38 @@ require("dotenv").config();
 const router = require("./routes/index");
 
 const User = mongoose.model("User");
+
 mongoose.Promise = global.Promise;
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost:27017/recipe_db",
-  {
+
+let testDB = "recipe_test_db",
+  mainDB = "recipe_db",
+  mongooseObjects = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
-  }
-);
-const client = mongoose.connect;
-var db = mongoose.createConnection(
-  process.env.MONGODB_URI || "mongodb://localhost:27017/recipe_db",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-db.once("open", () => {
-  console.log("Successfully connected to MongoDB using Mongoose!");
-});
+  };
 
-app.set("port", process.env.PORT || 3000);
+function mongoDB(selectDB, inBuiltObj, port) {
+  let selectEnv =
+    process.env.MONGODB_URI || `mongodb://localhost:27017/${selectDB}`;
+
+  mongoose.connect(selectEnv, inBuiltObj);
+
+  const client = mongoose.connect;
+  mongoose
+    .createConnection(selectEnv, inBuiltObj)
+    .once("open", () =>
+      console.log(
+        `Successfully connected to MongoDB using Mongoose!, in ${selectDB} database`
+      )
+    );
+  app.set("port", process.env.PORT || port);
+}
+
+if (process.env.NODE_ENV === "test") mongoDB(testDB, mongooseObjects, 3001);
+else mongoDB(mainDB, mongooseObjects, 3000);
+
 app.set("view engine", "ejs");
 app.set("token", process.env.TOKEN || "recipeT0k3n");
 
@@ -80,3 +89,5 @@ const server = app.listen(port, () => {
 });
 const io = require("socket.io")(server);
 require("./controllers/chatsController")(io);
+
+module.exports = app;
