@@ -99,7 +99,7 @@ socket.on("user disconnected", () => {
   });
 });
 socket.on("user connected", () => {
-  console.log("User disconnected");
+  console.log("User connected");
   displayMessage({
     userName: "Notice",
     content: "User joined the chat",

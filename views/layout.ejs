@@ -69,7 +69,7 @@
         list-style: none;
       }
       .current-user {
-        padding: 10px;
+        padding: 5px 10px;
         margin: 10px;
         border: 1px solid #6c757d;
         border-radius: 0 17px 17px 17px;
@@ -80,13 +80,13 @@
   <body>
     <div class="container w-100">
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
-        <div class="" style="display: flex; flex-direction: column;">
+        <div class="" style="display: flex; flex-direction: column">
           <a class="navbar-brand" href="/">Confetti Cuisine </a>
           <small
             class="label label-default"
-            style="position: relative; top: -8px;"
+            style="position: relative; top: -8px"
           >
-            <a href="/" style="color: #000; text-decoration: none;"
+            <a href="/" style="color: #000; text-decoration: none"
               >recipe app</a
             >
           </small>
@@ -121,9 +121,7 @@
             <li class="nav-item px-5">
               <a class="nav-link" href="/users" title="users">Users</a>
             </li>
-            <li>
-              <%-include ('courses/_coursesModal') %>
-            </li>
+            <li><%-include ('courses/_coursesModal') %></li>
           </ul>
           <% if (loggedIn) { %>
           <div
@@ -137,7 +135,7 @@
           >
             <div class="d-flex flex-column">
               <small>Logged in as:</small>
-              <a href="<%=`/users/${currentUser._id}`%>" style="color: black;">
+              <a href="<%=`/users/${currentUser._id}`%>" style="color: black">
                 <%= currentUser.fullName %></a
               >
             </div>
@@ -167,7 +165,7 @@
       <% if (flashMessages) { %> <% if (flashMessages.success) { %>
       <div
         class="flash success container h4 text-right text-secondary animate__animated animate__fadeInDown"
-        style="width: 75ch;"
+        style="width: 75ch"
       >
         <i class="far fa-thumbs-up mr-3 h2"></i>
         <%= flashMessages.success %>
@@ -180,14 +178,12 @@
       </div>
       <% } %> <% } %>
     </div>
-    <div class="container d-flex _slot" style="min-height: 70vh;">
+    <div class="container d-flex _slot" style="min-height: 70vh">
       <!-- EJS: LAYOUT & PARTIALS slot -->
-      <div class="m-auto">
-        <%- body %>
-      </div>
+      <div class="m-auto"><%- body %></div>
     </div>
     <div class="container">
-      <footer style="background: #f8f9fa; padding: 40px;">
+      <footer style="background: #f8f9fa; padding: 40px">
         <div class="row">
           <div class="col-xs-12 col-lg-4">
             <h1>Lorem</h1>
@@ -196,7 +192,7 @@
             totam ratione cumque sequi magnam voluptate.
           </div>
           <div class="col-xs-12 col-lg-4 text-center">
-            <ul style="list-style: none;">
+            <ul style="list-style: none">
               <li class="m-1"><%- include ('courses/_showCourseModal') %></li>
               <li class="m-1"><%- include ('users/_usersModal') %></li>
               <li class="m-1">

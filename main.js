@@ -15,12 +15,15 @@ const router = require("./routes/index");
 
 const User = mongoose.model("User");
 mongoose.Promise = global.Promise;
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-});
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://local- host:27017/recipe_db",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+  }
+);
 const client = mongoose.connect;
 var db = mongoose.createConnection(url, {
   useNewUrlParser: true,
