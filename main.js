@@ -47,7 +47,8 @@ else mongoDB(mainDB, mongooseObjects, 3000);
 app.set("view engine", "ejs");
 app.set("token", process.env.TOKEN || "recipeT0k3n");
 
-app.use(morgan("combined"));
+// app.use(morgan("combined"));
+app.use(morgan(":method :url :status * :response-time ms"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(expressValidator());
